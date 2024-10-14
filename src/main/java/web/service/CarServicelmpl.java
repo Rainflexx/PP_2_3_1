@@ -1,11 +1,11 @@
 package web.service;
 
-import web.carRepos.CarRepository;
+import web.repository.CarRepository;
 import web.models.Car;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class CarServicelmpl implements CarService {
 
