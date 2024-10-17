@@ -1,5 +1,15 @@
 package web.models;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
+import javax.validation.constraints.*;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -9,14 +19,20 @@ public class User {
     private Integer id;
 
     @Column(name = "name")
+    @NotBlank(message = "{required}")
     private String firstName;
 
     @Column(name = "last_name")
+    @NotBlank(message = "{required}")
     private String lastName;
 
     @Column(name = "email")
+    @NotEmpty
+    @Email(message = "{invalid_email}")
     private String email;
-    public User() {}
+
+    public User() {
+    }
 
     public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -65,5 +81,16 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email +
                 '}';
+    }
+    public void validateUserData(User user) {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        if (!violations.isEmpty()) {
+            for (ConstraintViolation<User> violation : violations) {
+                System.err.printf("%s: %s%n", violation.getPropertyPath(), violation.getMessage());
+            }
+            throw new ValidationException("User data validation failed");
+        }
     }
 }

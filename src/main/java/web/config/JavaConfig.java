@@ -16,7 +16,7 @@ import java.util.Properties;
 
 
 @Configuration
-@ComponentScan( "web")
+@ComponentScan("web")
 @EnableTransactionManagement
 
 
@@ -33,7 +33,7 @@ public class JavaConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(getDataSource());
         entityManagerFactoryBean.setPackagesToScan("web");
@@ -43,14 +43,15 @@ public class JavaConfig {
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
 
         Properties properties = new Properties();
-        properties.setProperty("hibernate.show_sql","true");
-        properties.setProperty("hibernate.hbm2ddl.auto","create");
-        properties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
         entityManagerFactoryBean.setJpaProperties(properties);
 
         return entityManagerFactoryBean;
     }
+
     @Bean
     public PlatformTransactionManager transactionManager() {
 
